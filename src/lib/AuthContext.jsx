@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(true);
   const [authError, setAuthError] = useState(null);
-  const [appPublicSettings, setAppPublicSettings] = useState(null); // Contains only { id, public_settings }
+  const [appPublicSettings, setAppPublicSettings] = useState(null);
 
   useEffect(() => {
     checkAppState();
@@ -125,17 +125,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const checkUserAuth = async () => {
     try {
-      // Now check if the user is authenticated
-      setIsLoadingAuth(true);
       const currentUser = await db.auth.me();
       setUser(currentUser);
-      setIsAuthenticated(true);
-      setIsLoadingAuth(false);
+      setIsAuthenticated(Boolean(currentUser));
     } catch (error) {
-      console.error('User auth check failed:', error);
-      setIsLoadingAuth(false);
+      setUser(null);
       setIsAuthenticated(false);
 
       // If user auth fails, it might be an expired token
@@ -148,21 +143,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = (shouldRedirect = true) => {
+  const logout = async (shouldRedirect = true) => {
+    await db.auth.logout();
     setUser(null);
     setIsAuthenticated(false);
 
     if (shouldRedirect) {
-      // Use the SDK's logout method which handles token cleanup and redirect
-      db.auth.logout(window.location.href);
-    } else {
-      // Just remove the token without redirect
-      db.auth.logout();
+      window.location.href = '/';
     }
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
     db.auth.redirectToLogin(window.location.href);
   };
 
@@ -176,7 +167,7 @@ export const AuthProvider = ({ children }) => {
       appPublicSettings,
       logout,
       navigateToLogin,
-      checkAppState
+      checkAppState,
     }}>
       {children}
     </AuthContext.Provider>
