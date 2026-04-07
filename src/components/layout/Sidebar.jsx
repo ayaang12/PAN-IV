@@ -28,7 +28,7 @@ export default function Sidebar() {
           <Shield className="w-5 h-5 text-sidebar-primary-foreground" />
         </div>
         <div>
-          <h1 className="font-inter font-bold text-base tracking-tight">MedGuard</h1>
+          <h1 className="font-inter font-bold text-base tracking-tight">PAN-IV</h1>
           <p className="text-xs text-sidebar-foreground/60">IV Infection Monitor</p>
         </div>
       </div>
