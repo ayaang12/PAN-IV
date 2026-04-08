@@ -1,13 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Activity,
-  Bell,
-  Users,
-  Settings,
-  Heart,
-  Shield,
-} from "lucide-react";
+import { LayoutDashboard, Activity, Bell, Users, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
